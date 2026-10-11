@@ -1,0 +1,88 @@
+# TaskFlow API Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Build an asynchronous REST API for task management with JWT authentication, user isolation, filtering, pagination, and comprehensive tests.
+
+**Architecture:** FastAPI with layered architecture (routes → schemas → models → database), async/await throughout, JWT auth with access+refresh tokens, SQLite database.
+
+**Tech Stack:** Python 3.12+, FastAPI, Pydantic v2, SQLAlchemy 2.0 (async), aiosqlite, PyJWT, argon2-cffi, pytest, httpx, Ruff.
+
+## Global Constraints
+
+- Python version: 3.12+
+- FastAPI with async endpoints
+- Pydantic v2 for validation
+- SQLAlchemy 2.0 with asyncio
+- JWT: HS256, access token 15 min expiry, refresh token 7 days expiry
+- Password hashing: argon2-cffi (time_cost=3, memory_cost=65536, parallelism=2)
+- SQLite database
+- Ruff for linting and formatting
+- pytest for testing
+- All file paths must be exact as specified
+- No TODOs or placeholders in final code
+
+---
+
+### Task 1: Project Structure and Configuration
+
+**Files:**
+- Create: `taskflow-api/pyproject.toml`
+- Create: `taskflow-api/requirements.txt`
+- Create: `taskflow-api/.gitignore`
+- Create: `taskflow-api/.env.example`
+- Create: `taskflow-api/README.md`
+- Create: `taskflow-api/src/__init__.py`
+- Create: `taskflow-api/schemas/__init__.py`
+- Create: `taskflow-api/routes/__init__.py`
+- Create: `taskflow-api/tests/__init__.py`
+
+**Interfaces:**
+- Consumes: None
+- Produces: Project structure ready for development
+
+- [ ] **Step 1: Create pyproject.toml with all dependencies**
+
+```toml
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "taskflow-api"
+version = "1.0.0"
+description = "Async task management API with JWT authentication"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "pydantic>=2.0.0",
+    "pydantic-settings>=2.1.0",
+    "sqlalchemy>=2.0.0",
+    "aiosqlite>=0.19.0",
+    "python-jose[cryptography]>=3.3.0",
+    "argon2-cffi>=23.1.0",
+    "python-multipart>=0.0.6",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.23.0",
+    "httpx>=0.26.0",
+    "ruff>=0.1.0",
+]
+
+[tool.setuptools]
+packages = ["src", "schemas", "routes", "tests"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

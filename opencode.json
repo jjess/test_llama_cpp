@@ -1,0 +1,36 @@
+// path for this file:
+// ~/.config/opencode/opencode.json
+// or
+// yourproject/.opencode/opencode.json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": true,
+  
+  "plugin": [
+    "opencode-ignore",
+    "superpowers@git+https://github.com/obra/superpowers.git"
+  ],
+
+  "provider": {
+  
+      "llama_cpp-pcgaming": {
+      "name": "llama.cpp (pcgaming)",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://192.168.0.105:8080/v1"
+      },
+      "models": {
+        "local-model": {
+          "name": "Local model",
+          "limit": {
+            "context": 65536,
+            "output": 12288
+          }
+        }
+      }
+    }
+  }
+  
+  
+}
+
